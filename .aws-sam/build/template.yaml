@@ -1,0 +1,59 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: 'doctor_api
+
+  Sample SAM Template for doctor_api
+
+  '
+Globals:
+  Function:
+    Timeout: 3
+Resources:
+  GetDevices:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: GetDevices
+      Handler: app.lambdaHandler
+      Runtime: nodejs14.x
+      Events:
+        HelloWorld:
+          Type: Api
+          Properties:
+            Path: /devices
+            Method: get
+  CreateDevices:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: CreateDevices
+      Handler: app.lambdaHandler
+      Runtime: nodejs14.x
+      Events:
+        HelloWorld:
+          Type: Api
+          Properties:
+            Path: /devices
+            Method: post
+  UpdateDevices:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: UpdateDevices
+      Handler: app.lambdaHandler
+      Runtime: nodejs14.x
+      Events:
+        HelloWorld:
+          Type: Api
+          Properties:
+            Path: /devices/{id}
+            Method: put
+  DeleteDevices:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: DeleteDevices
+      Handler: app.lambdaHandler
+      Runtime: nodejs14.x
+      Events:
+        HelloWorld:
+          Type: Api
+          Properties:
+            Path: /devices/{id}
+            Method: delete
