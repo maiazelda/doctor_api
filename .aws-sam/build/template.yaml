@@ -8,7 +8,37 @@ Description: 'doctor_api
 Globals:
   Function:
     Timeout: 3
+Parameters:
+  Stage:
+    Description: An stage name that will be prefixed to resource names
+    Type: String
+    Default: dev
 Resources:
+  DeviceTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+      - AttributeName: user
+        AttributeType: S
+      - AttributeName: device
+        AttributeType: S
+      KeySchema:
+      - AttributeName: user
+        KeyType: HASH
+      - AttributeName: device
+        KeyType: RANGE
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+  Api:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName:
+        Ref: Stage
+      Cors:
+        AllowMethods: '''DELETE,GET,HEAD,OPTIONS,PATCH,POST,PUT'''
+        AllowHeaders: '''Content-Type,X-Amz-Date,X-Amz-Security-Token,Authorization,X-Api-Key,X-Requested-With,Accept,Access-Control-Allow-Methods,Access-Control-Allow-Origin,Access-Control-Allow-Headers'''
+        AllowOrigin: '''*'''
   GetDevices:
     Type: AWS::Serverless::Function
     Properties:
@@ -16,9 +46,11 @@ Resources:
       Handler: app.lambdaHandler
       Runtime: nodejs14.x
       Events:
-        HelloWorld:
+        Api:
           Type: Api
           Properties:
+            RestApiId:
+              Ref: Api
             Path: /devices
             Method: get
   CreateDevices:
@@ -28,9 +60,11 @@ Resources:
       Handler: app.lambdaHandler
       Runtime: nodejs14.x
       Events:
-        HelloWorld:
+        Api:
           Type: Api
           Properties:
+            RestApiId:
+              Ref: Api
             Path: /devices
             Method: post
   UpdateDevices:
@@ -40,9 +74,11 @@ Resources:
       Handler: app.lambdaHandler
       Runtime: nodejs14.x
       Events:
-        HelloWorld:
+        Api:
           Type: Api
           Properties:
+            RestApiId:
+              Ref: Api
             Path: /devices/{id}
             Method: put
   DeleteDevices:
@@ -52,8 +88,10 @@ Resources:
       Handler: app.lambdaHandler
       Runtime: nodejs14.x
       Events:
-        HelloWorld:
+        Api:
           Type: Api
           Properties:
+            RestApiId:
+              Ref: Api
             Path: /devices/{id}
             Method: delete

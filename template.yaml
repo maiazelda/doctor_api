@@ -17,6 +17,28 @@ Parameters:
     Default: dev
 
 Resources:
+  DeviceTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        -
+          AttributeName: 'user'
+          AttributeType: 'S'
+        -
+          AttributeName: 'device'
+          AttributeType: 'S'
+      KeySchema:
+        -
+          AttributeName: 'user'
+          KeyType: 'HASH'
+        -
+          AttributeName: 'device'
+          KeyType: 'RANGE'
+      ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5
+
+
   # API
   Api:
     Type: AWS::Serverless::Api
@@ -36,8 +58,8 @@ Resources:
       Events:
         Api:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
-          RestApiId: !Ref Api
           Properties:
+            RestApiId: !Ref Api
             Path: /devices
             Method: get
 
@@ -50,8 +72,8 @@ Resources:
       Events:
         Api:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
-          RestApiId: !Ref Api
           Properties:
+            RestApiId: !Ref Api
             Path: /devices
             Method: post
 
@@ -64,8 +86,8 @@ Resources:
       Events:
         Api:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
-          RestApiId: !Ref Api
           Properties:
+            RestApiId: !Ref Api
             Path: /devices/{id}
             Method: put
 
@@ -78,8 +100,8 @@ Resources:
       Events:
         Api:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
-          RestApiId: !Ref Api
           Properties:
+            RestApiId: !Ref Api
             Path: /devices/{id}
             Method: delete
 
