@@ -68,7 +68,8 @@ Resources:
   CreateDevices:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      Handler: handlers/devices/create-devices.lambdaHandler
+      CodeUri: Createdevices/
+      Handler: app.lambdaHandler
       Runtime: nodejs14.x
       Policies:
         - DynamoDBCrudPolicy:
@@ -84,7 +85,8 @@ Resources:
   UpdateDevices:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      Handler: handlers/devices/update-device.lambdaHandler
+      CodeUri: Updatedevices/
+      Handler: app.lambdaHandler
       Runtime: nodejs14.x
       Policies:
         - DynamoDBCrudPolicy:
@@ -100,7 +102,8 @@ Resources:
   DeleteDevices:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      Handler: handlers/devices/delete-device.lambdaHandler
+      CodeUri: Deletedevices/
+      Handler: app.lambdaHandler
       Runtime: nodejs14.x
       Policies:
         - DynamoDBCrudPolicy:
@@ -116,7 +119,8 @@ Resources:
   GetDeviceDetails:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      Handler: handlers/devices/get-device.lambdaHandler
+      CodeUri: GetDeviceDetails/
+      Handler: app.lambdaHandler
       Runtime: nodejs14.x
       Policies:
         - DynamoDBCrudPolicy:
