@@ -5,16 +5,15 @@ const dbClient = new AWS.DynamoDB.DocumentClient({
 
 let response;
 
-
 exports.lambdaHandler = async (event, context) => {
     try {
-        // const ret = await axios(url);
+        console.log(event)
+        
         response = {
             'statusCode': 200,
             'body': JSON.stringify({
-                message: 'Delete devices api',
-                // location: ret.data.trim()
-            })
+                message: "test"
+             })
         }
     } catch (err) {
         console.log(err);

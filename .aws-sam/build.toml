@@ -15,4 +15,11 @@ source_md5 = ""
 packagetype = "Zip"
 functions = ["CreateDevices", "UpdateDevices", "DeleteDevices"]
 
+[function_build_definitions.e22361ef-5f12-479a-8df3-9385dc865dc4]
+codeuri = "GetDeviceDetails/"
+runtime = "nodejs14.x"
+source_md5 = ""
+packagetype = "Zip"
+functions = ["GetDeviceDetails"]
+
 [layer_build_definitions]

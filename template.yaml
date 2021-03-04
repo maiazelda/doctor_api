@@ -55,6 +55,9 @@ Resources:
       CodeUri: Getdevices/
       Handler: app.lambdaHandler
       Runtime: nodejs14.x
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref DeviceTable
       Events:
         Api:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
@@ -69,6 +72,9 @@ Resources:
       CodeUri: Createdevices/
       Handler: app.lambdaHandler
       Runtime: nodejs14.x
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref DeviceTable
       Events:
         Api:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
@@ -83,6 +89,9 @@ Resources:
       CodeUri: Createdevices/
       Handler: app.lambdaHandler
       Runtime: nodejs14.x
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref DeviceTable
       Events:
         Api:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
@@ -97,11 +106,32 @@ Resources:
       CodeUri: Createdevices/
       Handler: app.lambdaHandler
       Runtime: nodejs14.x
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref DeviceTable
       Events:
         Api:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
           Properties:
             RestApiId: !Ref Api
             Path: /devices/{id}
-            Method: delete
+            Method: delet 
+            
+  GetDeviceDetails:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      CodeUri: GetDeviceDetails/
+      Handler: app.lambdaHandler
+      Runtime: nodejs14.x
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref DeviceTable
+      Events:
+        Api:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            RestApiId: !Ref Api
+            Path: /users/{user}/devices/{device}
+            Method: get
+
 

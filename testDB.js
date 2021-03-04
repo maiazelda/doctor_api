@@ -6,7 +6,7 @@ const dbClient = new AWS.DynamoDB.DocumentClient({
 
 async function testReadTablebyKey (patient) {
     const params = {
-        TableName:"ma-1ere-table",
+        TableName: "ma-1ere-table",
         Key:{
             idClient:patient
         }
