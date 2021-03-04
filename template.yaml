@@ -86,7 +86,7 @@ Resources:
   UpdateDevices:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      CodeUri: Createdevices/
+      CodeUri: Updatedevices/
       Handler: app.lambdaHandler
       Runtime: nodejs14.x
       Policies:
@@ -103,7 +103,7 @@ Resources:
   DeleteDevices:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      CodeUri: Createdevices/
+      CodeUri: Deletedevices/
       Handler: app.lambdaHandler
       Runtime: nodejs14.x
       Policies:
@@ -114,8 +114,8 @@ Resources:
           Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
           Properties:
             RestApiId: !Ref Api
-            Path: /devices/{id}
-            Method: delet 
+            Path: /users/{user}/devices/{device}
+            Method: delete
             
   GetDeviceDetails:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction

@@ -109,8 +109,8 @@ Resources:
           Properties:
             RestApiId:
               Ref: Api
-            Path: /devices/{id}
-            Method: delet
+            Path: /users/{user}/devices/{device}
+            Method: delete
   GetDeviceDetails:
     Type: AWS::Serverless::Function
     Properties:

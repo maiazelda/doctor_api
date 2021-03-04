@@ -5,26 +5,41 @@ const dbClient = new AWS.DynamoDB.DocumentClient({
 
 let response;
 
+
 exports.lambdaHandler = async (event, context) => {
-    console.log(event)
     try {
-        const payload = JSON.parse(event.body)
-        const dbInsertDevice = await dbClient.put({
+        const dbResponse = await dbClient.get({
             TableName: "doctor-api-DeviceTable-HML8L1N4HCFG",
-            Item: {
-                user: payload.user,
-                device: payload.device
+            Key: {
+                user: event.pathParameters.user,
+                device: event.pathParameters.device
             }
         }).promise()
-        console.log(dbInsertDevice)
+        if (dbResponse.Item) {
+            await dbClient.delete({
+                TableName: "doctor-api-DeviceTable-HML8L1N4HCFG",
+                Key: {
+                    user: event.pathParameters.user,
+                    device: event.pathParameters.device
+                }
+            }).promise()
 
-        response = {
-            'statusCode': 200,
-            'body': JSON.stringify({
-                message: 'Create devices api',
 
-            })
+            response = {
+                'statusCode': 200,
+                'body': JSON.stringify({
+                    message: " Device bien supprimé"
+                })
+            }
+        } else {
+            response = {
+                'statusCode': 404,
+                'body': JSON.stringify({
+                    message: "Device not found"
+                })
+            }
         }
+
     } catch (err) {
         console.log(err);
         return err;

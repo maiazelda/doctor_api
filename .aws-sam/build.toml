@@ -13,7 +13,7 @@ codeuri = "Createdevices/"
 runtime = "nodejs14.x"
 source_md5 = ""
 packagetype = "Zip"
-functions = ["CreateDevices", "UpdateDevices", "DeleteDevices"]
+functions = ["CreateDevices"]
 
 [function_build_definitions.e22361ef-5f12-479a-8df3-9385dc865dc4]
 codeuri = "GetDeviceDetails/"
@@ -21,5 +21,19 @@ runtime = "nodejs14.x"
 source_md5 = ""
 packagetype = "Zip"
 functions = ["GetDeviceDetails"]
+
+[function_build_definitions.000e5af4-3c05-44f5-abc1-1e78f1378fe5]
+codeuri = "Deletedevices/"
+runtime = "nodejs14.x"
+source_md5 = ""
+packagetype = "Zip"
+functions = ["DeleteDevices"]
+
+[function_build_definitions.c691aef3-3ed6-438a-b15c-f165b264d437]
+codeuri = "Updatedevices/"
+runtime = "nodejs14.x"
+source_md5 = ""
+packagetype = "Zip"
+functions = ["UpdateDevices"]
 
 [layer_build_definitions]
