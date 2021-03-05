@@ -38,6 +38,28 @@ Resources:
           ReadCapacityUnits: 5
           WriteCapacityUnits: 5
 
+  
+  MessageTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        -
+          AttributeName: 'sender'
+          AttributeType: 'S'
+        -
+          AttributeName: 'receiver'
+          AttributeType: 'S'
+      KeySchema:
+        -
+          AttributeName: 'sender'
+          KeyType: 'HASH'
+        -
+          AttributeName: 'receiver'
+          KeyType: 'RANGE'
+      ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5
+
 
   # API
   Api:
@@ -65,11 +87,10 @@ Resources:
             Path: /devices
             Method: get
 
-  CreateDevices:
+  CreateDevice:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      CodeUri: Createdevices/
-      Handler: app.lambdaHandler
+      Handler: handlers/devices/create-device.lambdaHandler
       Runtime: nodejs14.x
       Policies:
         - DynamoDBCrudPolicy:
@@ -85,8 +106,7 @@ Resources:
   UpdateDevices:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      CodeUri: Updatedevices/
-      Handler: app.lambdaHandler
+      Handler: handlers/devices/update-device.lambdaHandler
       Runtime: nodejs14.x
       Policies:
         - DynamoDBCrudPolicy:
@@ -102,8 +122,7 @@ Resources:
   DeleteDevices:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      CodeUri: Deletedevices/
-      Handler: app.lambdaHandler
+      Handler: handlers/devices/delete-device.lambdaHandler
       Runtime: nodejs14.x
       Policies:
         - DynamoDBCrudPolicy:
@@ -119,8 +138,7 @@ Resources:
   GetDeviceDetails:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
     Properties:
-      CodeUri: GetDeviceDetails/
-      Handler: app.lambdaHandler
+      Handler: handlers/devices/get-details.lambdaHandler
       Runtime: nodejs14.x
       Policies:
         - DynamoDBCrudPolicy:
@@ -132,5 +150,21 @@ Resources:
             RestApiId: !Ref Api
             Path: /users/{user}/devices/{device}
             Method: get
-
+  
+  
+  CreateMsg:
+    Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
+    Properties:
+      Handler: handlers/devices/create-msg.lambdaHandler
+      Runtime: nodejs14.x
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref MessageTable
+      Events:
+        Api:
+          Type: Api # More info about API Event Source: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#api
+          Properties:
+            RestApiId: !Ref Api
+            Path: /receiver
+            Method: post
 

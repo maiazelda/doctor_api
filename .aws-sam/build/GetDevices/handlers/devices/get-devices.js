@@ -2,25 +2,29 @@ const AWS = require("aws-sdk")
 const dbClient = new AWS.DynamoDB.DocumentClient({
     region: "eu-central-1"
 })
+const {
+    success,
+    abort
+} = require("../../utils/response")
 
 let response;
 
 exports.lambdaHandler = async (event, context) => {
     try {
         const dbResponse = await dbClient.scan({
-            TableName:"doctor-api-DeviceTable-HML8L1N4HCFG",
+            TableName:"doctor-api-DeviceTable-1X525QLJIKMCP",
         }).promise()
-        console.log(dbResponse)
         
-        response = {
-            'statusCode': 200,
-            'body': JSON.stringify({
-                devices: dbResponse.Items
-             })
-        }
+        response = success({
+            devices: dbResponse.Items
+        })
+        
     } catch (err) {
         console.log(err);
-        return err;
+        response = abort(400, {
+            message: "bug"
+        })
+        
     }
 
     return response

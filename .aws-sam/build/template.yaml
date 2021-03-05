@@ -30,6 +30,22 @@ Resources:
       ProvisionedThroughput:
         ReadCapacityUnits: 5
         WriteCapacityUnits: 5
+  MessageTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+      - AttributeName: sender
+        AttributeType: S
+      - AttributeName: receiver
+        AttributeType: S
+      KeySchema:
+      - AttributeName: sender
+        KeyType: HASH
+      - AttributeName: receiver
+        KeyType: RANGE
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
   Api:
     Type: AWS::Serverless::Api
     Properties:
@@ -57,11 +73,10 @@ Resources:
             Path: /devices
             Method: get
       CodeUri: GetDevices
-  CreateDevices:
+  CreateDevice:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: CreateDevices
-      Handler: app.lambdaHandler
+      Handler: handlers/devices/create-device.lambdaHandler
       Runtime: nodejs14.x
       Policies:
       - DynamoDBCrudPolicy:
@@ -75,11 +90,11 @@ Resources:
               Ref: Api
             Path: /devices
             Method: post
+      CodeUri: CreateDevice
   UpdateDevices:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: UpdateDevices
-      Handler: app.lambdaHandler
+      Handler: handlers/devices/update-device.lambdaHandler
       Runtime: nodejs14.x
       Policies:
       - DynamoDBCrudPolicy:
@@ -93,11 +108,11 @@ Resources:
               Ref: Api
             Path: /devices/{id}
             Method: put
+      CodeUri: UpdateDevices
   DeleteDevices:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: DeleteDevices
-      Handler: app.lambdaHandler
+      Handler: handlers/devices/delete-device.lambdaHandler
       Runtime: nodejs14.x
       Policies:
       - DynamoDBCrudPolicy:
@@ -111,11 +126,11 @@ Resources:
               Ref: Api
             Path: /users/{user}/devices/{device}
             Method: delete
+      CodeUri: DeleteDevices
   GetDeviceDetails:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: GetDeviceDetails
-      Handler: app.lambdaHandler
+      Handler: handlers/devices/get-details.lambdaHandler
       Runtime: nodejs14.x
       Policies:
       - DynamoDBCrudPolicy:
@@ -129,3 +144,22 @@ Resources:
               Ref: Api
             Path: /users/{user}/devices/{device}
             Method: get
+      CodeUri: GetDeviceDetails
+  CreateMsg:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: handlers/devices/create-msg.lambdaHandler
+      Runtime: nodejs14.x
+      Policies:
+      - DynamoDBCrudPolicy:
+          TableName:
+            Ref: MessageTable
+      Events:
+        Api:
+          Type: Api
+          Properties:
+            RestApiId:
+              Ref: Api
+            Path: /receiver
+            Method: post
+      CodeUri: CreateMsg
